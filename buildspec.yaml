@@ -5,7 +5,7 @@ run-as: root
 phases:
   install:
     runtime-versions:
-      pyhton: 3.7
+      python: 3.7
   pre_build:
     commands:
       - cd /usr/bin
