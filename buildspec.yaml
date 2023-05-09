@@ -10,7 +10,7 @@ phases:
     commands:
       - cd /usr/bin
       - curl -s -qL o terraform.zip https://releases.hashicorp.com/terraform/0.10.4/terraform_0.10.4_linux_amd64.zip
-      - unzip -o terraform.zip"
+      - unzip -o terraform.zip
   build:
     commands:
       - echo Build started on `date`
