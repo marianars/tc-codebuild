@@ -11,8 +11,8 @@ phases:
     commands:
       - echo Build started on `date`
       - wget https://releases.hashicorp.com/terraform/0.10.4/terraform_0.10.4_linux_amd64.zip
-      - sudo unzip terraform_0.10.4_linux_amd64.zip 
-      - sudo mv terraform /bin
+      - unzip terraform_0.10.4_linux_amd64.zip -y
+      - mv terraform /bin
       - cd terraform
       - terraform init
       - terraform plan
