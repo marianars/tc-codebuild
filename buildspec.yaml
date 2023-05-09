@@ -3,17 +3,23 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      terraform: 0.13 
+      terraform: 1.0
     commands:
-      # Instalar cualquier dependencia requerida aquí
+      # Descargar e instalar la versión de Terraform especificada en la fase install
+      curl -O https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip
+      unzip terraform_1.0.9_linux_amd64.zip
+      mv terraform /usr/local/bin/
+
   pre_build:
     commands:
+      # Configurar las credenciales de AWS
       echo "Setting AWS credentials..."
       echo $AWS_ACCESS_KEY_ID > ~/.aws/credentials
       echo $AWS_SECRET_ACCESS_KEY >> ~/.aws/credentials
       echo $AWS_DEFAULT_REGION >> ~/.aws/config
-      echo "Downloading Terraform modules..."
-      cd $CODEBUILD_SRC_DIR/codeterraform/
+
+      # Ejecutar comandos de Terraform
+      echo "Running Terraform commands..."
       terraform init -input=false -backend-config="bucket=new-tc-terraform-state"
 
   build:
