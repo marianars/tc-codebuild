@@ -7,7 +7,7 @@ phases:
       - curl -O https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip
       - unzip terraform_1.0.9_linux_amd64.zip
       - which date
-      - mv terraform /usr/local/bin/
+      - mv terraform /usr/bin/
       - echo "Running Terraform commands..."
       - cd codeterraform
       - terraform init -input=false -backend-config="bucket=new-tc-terraform-state"
