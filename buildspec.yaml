@@ -5,20 +5,18 @@ run-as: root
 phases:
   install:
     runtime-versions:
-      java: corretto11
+      pyhton: 3.7
   pre_build:
     commands:
-      - echo Nothing to do in the pre_build phase...
+      - cd /usr/bin
+      - curl -s -qL o terraform.zip https://releases.hashicorp.com/terraform/0.10.4/terraform_0.10.4_linux_amd64.zip
+      - unzip -o terraform.zip"
   build:
     commands:
       - echo Build started on `date`
-      - wget https://releases.hashicorp.com/terraform/0.10.4/terraform_0.10.4_linux_amd64.zip
-      - unzip -o terraform_0.10.4_linux_amd64.zip
+      - cd $CODEBUILD_SRC_DIR
       - pwd
-      - mv terraform /usr/bin/
-      - cd codeterraform
-      - /usr/bin/terraform init
-      - /usr/bin/terraform plan
+      - terraform init -input=false -backend-config="bucket=new-tc-terraform-state"
   post_build:
     commands:
       - echo Build completed on `date`
