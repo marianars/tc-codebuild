@@ -8,6 +8,7 @@ phases:
       - unzip terraform_1.0.9_linux_amd64.zip
       - which date
       - mv terraform /usr/bin/
+      - chmod +x /usr/bin/terraform
       - echo "Running Terraform commands..."
       - cd codeterraform
       - terraform init -input=false -backend-config="bucket=new-tc-terraform-state"
