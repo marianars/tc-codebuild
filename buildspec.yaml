@@ -15,7 +15,7 @@ phases:
       - wget https://releases.hashicorp.com/terraform/0.10.4/terraform_0.10.4_linux_amd64.zip
       - unzip -o terraform_0.10.4_linux_amd64.zip
       - pwd
-      - mv terraform /usr/bin
+      - mv terraform /usr/bin/
       - cd codeterraform
       - terraform init
       - terraform plan
