@@ -1,5 +1,7 @@
 version: 0.2
 
+run-as: root
+
 phases:
   install:
     runtime-versions:
@@ -11,7 +13,7 @@ phases:
     commands:
       - echo Build started on `date`
       - wget https://releases.hashicorp.com/terraform/0.10.4/terraform_0.10.4_linux_amd64.zip
-      - unzip terraform_0.10.4_linux_amd64.zip -y
+      - unzip terraform_0.10.4_linux_amd64.zip
       - mv terraform /bin
       - cd terraform
       - terraform init
