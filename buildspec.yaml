@@ -6,6 +6,7 @@ phases:
       # Descargar e instalar la versión de Terraform especificada en la fase install
       - curl -O https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip
       - unzip terraform_1.0.9_linux_amd64.zip
+      - which date
       - mv terraform /usr/local/bin/
       - echo "Running Terraform commands..."
       - cd codeterraform
