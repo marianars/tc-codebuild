@@ -17,8 +17,8 @@ phases:
       - pwd
       - mv terraform /usr/bin/
       - cd codeterraform
-      - terraform init
-      - terraform plan
+      - /usr/bin/terraform init
+      - /usr/bin/terraform plan
   post_build:
     commands:
       - echo Build completed on `date`
