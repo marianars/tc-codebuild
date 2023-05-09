@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ALB, ASG and Launch Template
+
+Resources:
+  LoadBalancer1:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: tc2-load-balancer
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+      SecurityGroups:
+        - sg-0ea08e91316c4b5ed 
+      Subnets:
+        - subnet-0b2af67c24ff0c099 
+        - subnet-070df105d0d8edd1b 
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: tc2-target-group
+      Port: 80
+      Protocol: HTTP
+      TargetType: instance
+      VpcId: vpc-0fd4c9e87e2c99e07 
+
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer1
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: tc-cfmt-template
+      LaunchTemplateData:
+        IamInstanceProfile: 
+          Arn: arn:aws:iam::898035109227:instance-profile/tc-instance-role
+        ImageId: ami-077d3a0eba6822416
+        InstanceType: t2.micro
+        SecurityGroupIds: 
+          - sg-0238123eb1ea3447d
+        UserData: !Base64 |
+          #!/bin/bash
+          cd
+          git init
+          git pull https://github.com/marianars/tc-test.git
+          sudo mv index.html /usr/share/nginx/html/
+          sudo systemctl start nginx
+      TagSpecifications:
+        - ResourceType: launch-template
+          Tags:
+              - Key: Name
+                Value: tc-instances
+
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: tc-auto-scaling-group
+      VPCZoneIdentifier:
+        - subnet-0b2af67c24ff0c099
+      TargetGroupARNs:
+        - !Ref TargetGroup
+      LaunchTemplate:
+        LaunchTemplateName: tc-cfmt-template
+        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+      MinSize: 1
+      MaxSize: 1
+      DesiredCapacity: 1
+      HealthCheckGracePeriod: 300
+      HealthCheckType: ELB
+      MetricsCollection:
+        - Granularity: 1Minute
+          Metrics:
+            - GroupMinSize
+            - GroupMaxSize
+            - GroupDesiredCapacity
+      Tags:
+      - Key: Name
+        Value: my-auto-scaling-group
+        PropagateAtLaunch: 'true'
+
+
+
+
+
