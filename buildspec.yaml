@@ -15,8 +15,8 @@ phases:
 
   build:
     commands:
-      echo "Applying Terraform changes..."
-      terraform plan
+      - echo "Applying Terraform changes..."
+      - terraform plan
 
   post_build:
     commands:
